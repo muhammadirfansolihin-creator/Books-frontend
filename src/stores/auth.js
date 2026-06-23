@@ -3,10 +3,20 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
+const getSafeUser = () => {
+  try {
+    const data = localStorage.getItem('user');
+    return data && data.trim().startsWith('{') ? JSON.parse(data) : null;
+  } catch (e) {
+    localStorage.removeItem('user');
+    return null;
+  }
+};
+
 export const useAuth = defineStore('auth', {
   state: () => ({
     token:  localStorage.getItem('token') || null,
-    user:   JSON.parse(localStorage.getItem('user') || 'null'),
+    user:   getSafeUser(),
   }),
   getters: {
     isAuthenticated:  (s) => !!s.token,

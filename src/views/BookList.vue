@@ -11,15 +11,18 @@ const error  = ref('');
 const ok     = ref('');
 const editing = ref(null); // null | 'new' | book object
 
-const filtered = computed(() => books.value);
+const filtered = computed(() => {
+  return Array.isArray(books.value) ? books.value:[];
+});
 
 async function load() {
   error.value = '';
   try {
     const { data } = await api.get('/api/books', { params: { q: q.value || undefined } });
-    books.value = data.data;
+    books.value = data.data || data || [];
   } catch (e) {
     error.value = e.message;
+    books.value = [];
   }
 }
 
