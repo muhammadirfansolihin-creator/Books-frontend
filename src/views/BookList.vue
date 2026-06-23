@@ -45,7 +45,7 @@ async function onSaved(msg)  { ok.value = msg; editing.value = null; await load(
 function canModify(book) {
   if (!auth.isAuthenticated) return false;
   if (auth.isAdmin) return true;
-  return book.created_by === auth.user.id;
+  return book.created_by === auth.user?.id;
 }
 
 onMounted(load);
